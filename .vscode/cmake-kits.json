@@ -1,0 +1,6 @@
+[
+    {
+        "name": "ARM Embedded Toolchain",
+        "toolchainFile": "arm-none-eabi.cmake"
+    }
+]

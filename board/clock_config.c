@@ -1,11 +1,4 @@
 /*
- * Copyright 2017-2019 NXP
- * All rights reserved.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- */
-
-/*
  * How to setup clock using clock driver functions:
  *
  * 1. Call CLOCK_InitXXXPLL() to configure corresponding PLL clock.
@@ -22,10 +15,11 @@
 
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v7.0
+product: Clocks v8.0
 processor: MIMXRT1052xxxxB
+package_id: MIMXRT1052CVL5B
 mcu_data: ksdk2_0
-processor_version: 0.10.4
+processor_version: 10.0.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 
 #include "clock_config.h"
@@ -57,7 +51,7 @@ void BOARD_InitBootClocks(void)
 name: BOARD_BootClockRUN
 called_from_default_init: true
 outputs:
-- {id: AHB_CLK_ROOT.outFreq, value: 12 MHz}
+- {id: AHB_CLK_ROOT.outFreq, value: 120 MHz}
 - {id: CAN_CLK_ROOT.outFreq, value: 2 MHz}
 - {id: CLK_1M.outFreq, value: 1 MHz}
 - {id: CLK_24M.outFreq, value: 24 MHz}
@@ -66,16 +60,16 @@ outputs:
 - {id: ENET_25M_REF_CLK.outFreq, value: 1.2 MHz}
 - {id: FLEXIO1_CLK_ROOT.outFreq, value: 1.5 MHz}
 - {id: FLEXIO2_CLK_ROOT.outFreq, value: 1.5 MHz}
-- {id: FLEXSPI_CLK_ROOT.outFreq, value: 2 MHz}
-- {id: GPT1_ipg_clk_highfreq.outFreq, value: 3 MHz}
-- {id: GPT2_ipg_clk_highfreq.outFreq, value: 3 MHz}
-- {id: IPG_CLK_ROOT.outFreq, value: 3 MHz}
+- {id: FLEXSPI_CLK_ROOT.outFreq, value: 60 MHz}
+- {id: GPT1_ipg_clk_highfreq.outFreq, value: 30 MHz}
+- {id: GPT2_ipg_clk_highfreq.outFreq, value: 30 MHz}
+- {id: IPG_CLK_ROOT.outFreq, value: 30 MHz}
 - {id: LCDIF_CLK_ROOT.outFreq, value: 3 MHz}
 - {id: LPI2C_CLK_ROOT.outFreq, value: 3 MHz}
-- {id: LPSPI_CLK_ROOT.outFreq, value: 6 MHz}
-- {id: LVDS1_CLK.outFreq, value: 24 MHz}
+- {id: LPSPI_CLK_ROOT.outFreq, value: 66 MHz}
+- {id: LVDS1_CLK.outFreq, value: 720 MHz}
 - {id: MQS_MCLK.outFreq, value: 3 MHz}
-- {id: PERCLK_CLK_ROOT.outFreq, value: 3 MHz}
+- {id: PERCLK_CLK_ROOT.outFreq, value: 30 MHz}
 - {id: PLL7_MAIN_CLK.outFreq, value: 24 MHz}
 - {id: SAI1_CLK_ROOT.outFreq, value: 3 MHz}
 - {id: SAI1_MCLK1.outFreq, value: 3 MHz}
@@ -87,12 +81,26 @@ outputs:
 - {id: SAI3_CLK_ROOT.outFreq, value: 3 MHz}
 - {id: SAI3_MCLK1.outFreq, value: 3 MHz}
 - {id: SAI3_MCLK3.outFreq, value: 1.5 MHz}
-- {id: SEMC_CLK_ROOT.outFreq, value: 4 MHz}
+- {id: SEMC_CLK_ROOT.outFreq, value: 120 MHz}
 - {id: SPDIF0_CLK_ROOT.outFreq, value: 1.5 MHz}
-- {id: TRACE_CLK_ROOT.outFreq, value: 6 MHz}
+- {id: TRACE_CLK_ROOT.outFreq, value: 88 MHz}
 - {id: UART_CLK_ROOT.outFreq, value: 4 MHz}
-- {id: USDHC1_CLK_ROOT.outFreq, value: 12 MHz}
-- {id: USDHC2_CLK_ROOT.outFreq, value: 12 MHz}
+- {id: USDHC1_CLK_ROOT.outFreq, value: 79.2 MHz}
+- {id: USDHC2_CLK_ROOT.outFreq, value: 79.2 MHz}
+settings:
+- {id: CCM.AHB_PODF.scale, value: '3'}
+- {id: CCM.LPSPI_PODF.scale, value: '8'}
+- {id: CCM.USDHC1_PODF.scale, value: '5'}
+- {id: CCM.USDHC2_PODF.scale, value: '5'}
+- {id: CCM_ANALOG.PLL1_BYPASS.sel, value: CCM_ANALOG.PLL1}
+- {id: CCM_ANALOG.PLL1_VDIV.scale, value: '30'}
+- {id: CCM_ANALOG.PLL2.denom, value: '1'}
+- {id: CCM_ANALOG.PLL2.num, value: '0'}
+- {id: CCM_ANALOG.PLL2_BYPASS.sel, value: CCM_ANALOG.PLL2_OUT_CLK}
+- {id: CCM_ANALOG.PLL2_PFD0_BYPASS.sel, value: CCM_ANALOG.PLL2_PFD0}
+- {id: CCM_ANALOG.PLL2_PFD1_BYPASS.sel, value: CCM_ANALOG.PLL2_PFD1}
+- {id: CCM_ANALOG.PLL2_PFD2_BYPASS.sel, value: CCM_ANALOG.PLL2_PFD2}
+- {id: CCM_ANALOG.PLL2_PFD3_BYPASS.sel, value: CCM_ANALOG.PLL2_PFD3}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 
 /*******************************************************************************
@@ -100,14 +108,14 @@ outputs:
  ******************************************************************************/
 const clock_arm_pll_config_t armPllConfig_BOARD_BootClockRUN =
     {
-        .loopDivider = 98,                        /* PLL loop divider, Fout = Fin * 49 */
+        .loopDivider = 60,                        /* PLL loop divider, Fout = Fin * 30 */
         .src = 0,                                 /* Bypass clock source, 0 - OSC 24M, 1 - CLK1_P and CLK1_N */
     };
 const clock_sys_pll_config_t sysPllConfig_BOARD_BootClockRUN =
     {
         .loopDivider = 1,                         /* PLL loop divider, Fout = Fin * ( 20 + loopDivider*2 + numerator / denominator ) */
-        .numerator = 1,                           /* 30 bit numerator of fractional loop divider */
-        .denominator = 60000,                     /* 30 bit denominator of fractional loop divider */
+        .numerator = 0,                           /* 30 bit numerator of fractional loop divider */
+        .denominator = 1,                         /* 30 bit denominator of fractional loop divider */
         .src = 0,                                 /* Bypass clock source, 0 - OSC 24M, 1 - CLK1_P and CLK1_N */
     };
 const clock_enet_pll_config_t enetPllConfig_BOARD_BootClockRUN =
@@ -140,7 +148,7 @@ void BOARD_BootClockRUN(void)
     CLOCK_SetMux(kCLOCK_PeriphClk2Mux, 1); /* Set PERIPH_CLK2 MUX to OSC */
     CLOCK_SetMux(kCLOCK_PeriphMux, 1);     /* Set PERIPH_CLK MUX to PERIPH_CLK2 */
     /* Set AHB_PODF. */
-    CLOCK_SetDiv(kCLOCK_AhbDiv, 0);
+    CLOCK_SetDiv(kCLOCK_AhbDiv, 2);
     /* Disable IPG clock gate. */
     CLOCK_DisableClock(kCLOCK_Adc1);
     CLOCK_DisableClock(kCLOCK_Adc2);
@@ -164,13 +172,13 @@ void BOARD_BootClockRUN(void)
     /* Disable USDHC1 clock gate. */
     CLOCK_DisableClock(kCLOCK_Usdhc1);
     /* Set USDHC1_PODF. */
-    CLOCK_SetDiv(kCLOCK_Usdhc1Div, 1);
+    CLOCK_SetDiv(kCLOCK_Usdhc1Div, 4);
     /* Set Usdhc1 clock source. */
     CLOCK_SetMux(kCLOCK_Usdhc1Mux, 0);
     /* Disable USDHC2 clock gate. */
     CLOCK_DisableClock(kCLOCK_Usdhc2);
     /* Set USDHC2_PODF. */
-    CLOCK_SetDiv(kCLOCK_Usdhc2Div, 1);
+    CLOCK_SetDiv(kCLOCK_Usdhc2Div, 4);
     /* Set Usdhc2 clock source. */
     CLOCK_SetMux(kCLOCK_Usdhc2Mux, 0);
     /* In SDK projects, SDRAM (configured by SEMC) will be initialized in either debug script or dcd.
@@ -209,7 +217,7 @@ void BOARD_BootClockRUN(void)
     CLOCK_DisableClock(kCLOCK_Lpspi3);
     CLOCK_DisableClock(kCLOCK_Lpspi4);
     /* Set LPSPI_PODF. */
-    CLOCK_SetDiv(kCLOCK_LpspiDiv, 3);
+    CLOCK_SetDiv(kCLOCK_LpspiDiv, 7);
     /* Set Lpspi clock source. */
     CLOCK_SetMux(kCLOCK_LpspiMux, 2);
     /* Disable TRACE clock gate. */
@@ -308,8 +316,6 @@ void BOARD_BootClockRUN(void)
     CLOCK_SetMux(kCLOCK_Pll3SwMux, 0);
     /* Init ARM PLL. */
     CLOCK_InitArmPll(&armPllConfig_BOARD_BootClockRUN);
-    /* Bypass for ARM PLL. */
-    CLOCK_SetPllBypass(CCM_ANALOG, kCLOCK_PllArm, 1);
     /* In SDK projects, SDRAM (configured by SEMC) will be initialized in either debug script or dcd.
      * With this macro SKIP_SYSCLK_INIT, system pll (selected to be SEMC source clock in SDK projects) will be left unchanged.
      * Note: If another clock source is selected for SEMC, user may want to avoid changing that clock as well.*/
@@ -329,8 +335,6 @@ void BOARD_BootClockRUN(void)
     CLOCK_InitSysPfd(kCLOCK_Pfd3, 16);
     /* Disable pfd offset. */
     CCM_ANALOG->PLL_SYS &= ~CCM_ANALOG_PLL_SYS_PFD_OFFSET_EN_MASK;
-    /* Bypass System PLL. */
-    CLOCK_SetPllBypass(CCM_ANALOG, kCLOCK_PllSys, 1);
 #endif
     /* In SDK projects, external flash (configured by FLEXSPI) will be initialized by dcd.
      * With this macro XIP_EXTERNAL_FLASH, usb1 pll (selected to be FLEXSPI clock source in SDK projects) will be left unchanged.

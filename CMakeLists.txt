@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(imxrt1050_template)
+project(imxrt1050_freertos_epd)
 
 enable_language(CXX)
 enable_language(ASM)
@@ -96,6 +96,7 @@ set(TARGET_C_SOURCES
     "board/peripherals.c"
     "board/pin_mux.c"
     "source/main.c"
+    "source/tasks/user_task_lvgl.c"
 )
 
 # Copy them from Makefile
@@ -105,7 +106,7 @@ set(TARGET_ASM_SOURCES
 
 # Copy them from Makefile
 set(TARGET_DEFINES
-    "-DCPU_MIMXRT1052DVL6B"
+    "-DCPU_MIMXRT1052CVL5B"
     "-D__STARTUP_CLEAR_BSS"
     "-D__STARTUP_INITIALIZE_NONCACHEDATA"
 )
@@ -120,6 +121,9 @@ set(TARGET_INCLUDES
 )
 
 set(TARGET_LIBS
+    "freertos-kernel"
+    "lvgl"
+    "epd"
 )
 
 # Conditional flags
@@ -136,6 +140,20 @@ set(CMAKE_C_FLAGS          "${TARGET_CFLAGS_HARDWARE} ${TARGET_CFLAGS_EXTRA} ${T
 set(CMAKE_CXX_FLAGS        "${CMAKE_C_FLAGS} ${TARGET_CXXFLAGS_EXTRA}")
 set(CMAKE_ASM_FLAGS        "${CMAKE_C_FLAGS} -x assembler-with-cpp")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_C_FLAGS} -specs=nano.specs -specs=nosys.specs -Wl,--gc-sections -lc -lm -lnosys ${TARGET_LDFLAGS_EXTRA}")
+
+# FreeRTOS kernel project
+set(FREERTOS_ARCH           "ARM_CM7/r0p1")
+set(FREERTOS_TOOLCHAIN      "GCC")
+set(FREERTOS_MEMMANG_METHOD "4")
+set(FREERTOS_CONFIG_FILE    "${CMAKE_CURRENT_SOURCE_DIR}/include/FreeRTOSConfig.h")
+add_subdirectory(components/FreeRTOS)
+
+# LVGL project
+set(LVGL_CONFIG_FILE "${CMAKE_CURRENT_SOURCE_DIR}/include/lv_conf.h")
+add_subdirectory(components/LittleVGL)
+
+# EPD project
+add_subdirectory(components/EPD)
 
 # Main targets are added here
 

@@ -6,6 +6,7 @@
         "user_tasks.h": "c",
         "lvgl.h": "c",
         "epd_wfh0420cz35.h": "c",
-        "pin_mux.h": "c"
+        "pin_mux.h": "c",
+        "epd_gdew042t2.h": "c"
     },
 }

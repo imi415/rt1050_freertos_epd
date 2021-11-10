@@ -4,3 +4,6 @@
 [submodule "components/lvgl"]
 	path = components/LittleVGL/lvgl
 	url = https://github.com/lvgl/lvgl.git
+[submodule "components/epd-spi"]
+	path = components/epd-spi
+	url = https://github.com/imi415/epd-spi.git

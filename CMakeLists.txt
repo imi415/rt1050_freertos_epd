@@ -123,7 +123,7 @@ set(TARGET_INCLUDES
 set(TARGET_LIBS
     "freertos-kernel"
     "lvgl"
-    "epd"
+    "epd-spi"
 )
 
 # Conditional flags
@@ -152,8 +152,8 @@ add_subdirectory(components/FreeRTOS)
 set(LVGL_CONFIG_FILE "${CMAKE_CURRENT_SOURCE_DIR}/include/lv_conf.h")
 add_subdirectory(components/LittleVGL)
 
-# EPD project
-add_subdirectory(components/EPD)
+# EPD-SPI project
+add_subdirectory(components/epd-spi)
 
 # Main targets are added here
 
